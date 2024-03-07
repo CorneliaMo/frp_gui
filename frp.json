@@ -1,1 +1,1 @@
-[{"name": "test1", "type": "tcp", "localIP": "127.0.0.1", "localPort": 1, "remotePort": 1}, {"name": "test2", "type": "tcp", "localIP": "127.0.0.1", "localPort": 2, "remotePort": 2}]
+[{"name": "test1", "type": "tcp", "localIP": "127.0.0.1", "localPort": 10000, "remotePort": 10000}]

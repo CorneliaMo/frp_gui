@@ -1,10 +1,13 @@
 # coding=utf-8
 
+from json import load, dump
 import sys
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView, QTableWidget, QAbstractItemView, QPushButton, QLabel, \
-    QFrame, QTableWidgetItem, QDialog, QVBoxLayout, QWidget, QLineEdit, QComboBox
-import json
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QAbstractItemView, QPushButton, QLabel, \
+    QFrame, QTableWidgetItem, QDialog, QVBoxLayout, QLineEdit, QComboBox
+
+import booter
 import generator
 
 
@@ -25,12 +28,12 @@ class newWindow(QDialog):
     def commit(self):
         # 加载已存在的映射列表
         with open("frp.json", mode='r') as fp:
-            frp_list = json.load(fp)
+            frp_list = load(fp)
         with open("frp.json", mode='w') as fp:
             frp_list.append({"name": self.name_input.text(), "type": self.type_input.currentText(),
                              "localIP": self.localIP_input.text(), "localPort": int(self.localPort_input.text()),
                              "remotePort": int(self.remoteIP_input.text())})
-            json.dump(frp_list, fp)
+            dump(frp_list, fp)
         self.close()
         self.origin.loadList()
         self.origin.fillTable()
@@ -81,12 +84,12 @@ class editWindow(newWindow):
     def commit(self):
         # 加载已存在的映射列表
         with open("frp.json", mode='r') as fp:
-            frp_list = json.load(fp)
+            frp_list = load(fp)
         with open("frp.json", mode='w') as fp:
             frp_list[self.row] = {"name": self.name_input.text(), "type": self.type_input.currentText(),
                                   "localIP": self.localIP_input.text(), "localPort": int(self.localPort_input.text()),
                                   "remotePort": int(self.remoteIP_input.text())}
-            json.dump(frp_list, fp)
+            dump(frp_list, fp)
         self.close()
         self.origin.loadList()
         self.origin.fillTable()
@@ -107,6 +110,7 @@ class mainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.frpClient = booter.frpcBooter()
         self.initUI()
 
     x_size = 470
@@ -122,11 +126,15 @@ class mainWindow(QMainWindow):
             self.boot_button.setText("启动")
             self.status_label.setText(self.off)
             self.status = False
+            print(self.frpClient.status())
+            if self.frpClient.status():
+                self.frpClient.shutup()
         else:
             self.boot_button.setText("关闭")
             self.status_label.setText(self.on)
             self.status = True
-        generator.generator()
+            generator.generator()
+            self.frpClient.startup()
 
     def initUI(self):
         self.setGeometry(960 - self.x_size // 2, 540 - self.y_size // 2, self.x_size, self.y_size)
@@ -144,7 +152,7 @@ class mainWindow(QMainWindow):
     def loadList(self):
         # 加载已存在的映射列表
         with open("frp.json", mode='r') as fp:
-            self.frp_list = json.load(fp)
+            self.frp_list = load(fp)
 
     def initTable(self):
         # 端口映射列表
@@ -227,10 +235,10 @@ class mainWindow(QMainWindow):
             try:
                 # 加载已存在的映射列表
                 with open("frp.json", mode='r') as fp:
-                    frp_list = json.load(fp)
+                    frp_list = load(fp)
                 with open("frp.json", mode='w') as fp:
                     del frp_list[self.table.selectedItems()[0].row()]
-                    json.dump(frp_list, fp)
+                    dump(frp_list, fp)
                 self.reloadTable()
             except:
                 pass
