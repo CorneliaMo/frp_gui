@@ -1,14 +1,14 @@
-serverAddr = "1.1.1.1"
-serverPort = 9999
+serverAddr = "server.corneliamo.cn"
+serverPort = 10000
 webServer.addr = "127.0.0.1"
 webServer.port = 7400
 webServer.user = "admin"
 webServer.password = "admin"
 
 [[proxies]]
-name = "test1"
+name = "http"
 type = "tcp"
 localIP = "127.0.0.1"
-localPort = 10000
-remotePort = 10000
+localPort = 10050
+remotePort = 10050
 

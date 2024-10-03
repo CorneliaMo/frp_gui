@@ -4,8 +4,8 @@ import json
 
 
 def generator():
-    serverAddr = "1.1.1.1"
-    serverPort = "9999"
+    serverAddr = "server.corneliamo.cn"
+    serverPort = 10000
 
     with open("frp.json", mode='r') as fp:
         frp_list = json.load(fp)

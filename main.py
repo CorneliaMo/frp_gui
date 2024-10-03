@@ -2,7 +2,7 @@
 
 from json import load, dump
 import sys
-
+from time import sleep
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QAbstractItemView, QPushButton, QLabel, \
     QFrame, QTableWidgetItem, QDialog, QVBoxLayout, QLineEdit, QComboBox
@@ -129,8 +129,13 @@ class mainWindow(QMainWindow):
             print(self.frpClient.status())
             if self.frpClient.status():
                 self.frpClient.shutup()
+            sleep(0.5)
+            self.frpClient.startup()
+            self.status_label.setText(self.on)
+            self.status = True
+            self.boot_button.setText("重启")
         else:
-            self.boot_button.setText("关闭")
+            self.boot_button.setText("重启")
             self.status_label.setText(self.on)
             self.status = True
             generator.generator()
@@ -214,7 +219,7 @@ class mainWindow(QMainWindow):
 
         # 启动/关闭frpc客户端按钮
         self.boot_button = QPushButton(self)
-        self.boot_button.setText("启动")
+        self.boot_button.setText("重启")
         self.boot_button.move(10, 10)
         self.boot_button.clicked.connect(self.switch)
 
@@ -248,4 +253,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)  # 创建app
     win = mainWindow()
     win.show()
+    sleep(20)
+    win.switch()
     sys.exit(app.exec_())

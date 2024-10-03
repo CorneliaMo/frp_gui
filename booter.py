@@ -11,7 +11,7 @@ class frpcBooter:
     def startup(self):
         if not self.status():
             result = win32process.CreateProcess("frpc.exe", 'frpc.exe -c frpc.toml', None, None, 0,
-                                                win32process.CREATE_NEW_CONSOLE, None, None, win32process.STARTUPINFO())
+                                                win32process.CREATE_NO_WINDOW, None, None, win32process.STARTUPINFO())
             self.hProcess = result[0]
             print(self.hProcess)
 

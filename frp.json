@@ -1,1 +1,1 @@
-[{"name": "test1", "type": "tcp", "localIP": "127.0.0.1", "localPort": 10000, "remotePort": 10000}]
+[{"name": "http", "type": "tcp", "localIP": "127.0.0.1", "localPort": 10050, "remotePort": 10050}]
